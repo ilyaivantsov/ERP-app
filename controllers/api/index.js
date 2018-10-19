@@ -1,23 +1,31 @@
-let user = {
-    name: 'Ilya Ivantsov' 
-};
+// Ссылки на переменные
+let APP,
+    DB,
+    PATH;
 
-module.exports = function(app){
-    app.get('/api/author', getAuthor);
-    app.get('/api/json', getJson);
-    app.get('/api/auth',auth)
+module.exports = function (app, db, path) {
+    APP = app;
+    DB = db;
+    PATH = path;
+    // Обработчики
+    app.get('/api/auth', auth)
 }
 
-function getAuthor(req,res) {
-    res.status(200).render('author', {user: user});
-}
-
-function getJson(req,res) {
-    res.status(200).json(user);
-}
-
-function auth(req,res) {
-   console.log(req.query);
-   var user = req.query;
-   res.status(200).render('hi', {user: user});
+function auth(req, res) {
+    var user = req.query;
+    DB.cursor({ name: user.name }, function (user) {
+        if (user.length == 0) res.status(401);
+        switch (user[0].id) {
+            case 1:
+                APP.set('views', PATH.join(PATH.resolve(), 'views/bs'));
+                res.status(200).render('hi', { user: user[0] });
+                break;
+            case 2:
+                APP.set('views', PATH.join(PATH.resolve(), 'views/fs'));
+                res.status(200).render('hi', { user: user[0] });
+                break;
+            default:
+                break;
+        }
+    });
 }
