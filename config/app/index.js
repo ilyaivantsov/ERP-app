@@ -1,3 +1,7 @@
+var path = require('path'),
+    express = require('express'),
+    app = express();
+
 /**
  * 
  * @param {Object} app      Приложение 
@@ -5,8 +9,8 @@
  * @param {Object} path     Модуль Path
  * @param {Number} port     Порт app
  */
- module.exports = class ERP{
-     constructor (app,express,path,port){
+module.exports = class ERP {
+    constructor(port) {
         app.use('/static', express.static(path.resolve('public')));        // Отдача статики
         app.set('view engine', 'ejs');                                     // Парсер
         app.set('views', path.join(path.resolve(), 'views/common'));       // Папка с общими шаблонами
@@ -15,5 +19,5 @@
         });
         app.listen(port)
         this.app = app;
-      }
- }
+    }
+}

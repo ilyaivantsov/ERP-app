@@ -1,13 +1,9 @@
-var path = require('path'),
-    mongoClient = require("mongodb").MongoClient,
-    confDB = require('./config/db'),
-    express = require('express'),
-    app = express(),
-    confAPP = require('./config/app'); // init app
-    ERP = new confAPP(app,express,path,3000),
+var confDB = require('./config/db'),
+    confAPP = require('./config/app'), // init app
+    ERP = new confAPP(3000),
     URL = "mongodb://192.168.99.100:27017/",
-    db  = new confDB(mongoClient,URL),
-    api = require('./controllers/api')(app, db, path);
+    db  = new confDB(URL),
+    api = require('./controllers/api')(ERP.app, db);
 
 /*var user1 = {
     name:'user1',
@@ -19,10 +15,9 @@ user2 = {
     password: 'user2',
     id:2
 };*/
-var user;
-db.cursor({id:11},function(res){
-   user = res;
-   console.log(user);
-});
-console.log(user);
-
+var validator = require('./db/validators/user-val.json');
+console.log(validator.required);
+//db.pushData('usersdb',' users',[{name:'Ilya Ivantsov',password:'2018',id:666}]);
+/*db.getData('usersdb',' users',{},function(res){
+    console.log(res);
+})*/

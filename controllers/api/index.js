@@ -3,12 +3,13 @@ let APP,
     DB,
     PATH;
 
-module.exports = function (app, db, path) {
+module.exports = function (app, db) {
     APP = app;
     DB = db;
-    PATH = path;
     // Обработчики
-    app.get('/api/auth', auth)
+    app.get('/api/auth', function(req,res){
+        res.status(200).render('hi', { user: {'name':'Ilya'} });
+    })
 }
 
 function auth(req, res) {
